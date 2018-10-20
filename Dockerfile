@@ -2,7 +2,11 @@
 
 FROM centos:7
 
-RUN yum update -y && yum install -y curl java-1.8.0-openjdk-devel java-1.8.0-openjdk
+RUN yum update -y && yum install -y curl wget git unzip python screen java-1.8.0-openjdk-devel java-1.8.0-openjdk
+
+RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+
+RUN chmod a+rx /usr/local/bin/youtube-dl
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2018-03-27
