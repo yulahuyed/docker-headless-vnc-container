@@ -37,6 +37,7 @@ ENV HOME=/headless \
     VNC_VIEW_ONLY=false
 WORKDIR $HOME
 
+RUN mkdir -p $HOME/config && chmod -R 777 $HOME/config
 RUN mkdir -p $HOME/goproject && chmod -R 777 $HOME/goproject
 RUN curl -o go.tar.gz -L `curl -L "https://golang.org/dl/" | grep -E "dl.google.com.*linux-amd64.tar.gz" | head -n 1 | awk -F "href" '{print $2}' | awk -F '"' '{print $2}'`
 RUN tar xzf go.tar.gz
