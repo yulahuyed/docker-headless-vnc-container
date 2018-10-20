@@ -2,6 +2,8 @@
 
 FROM centos:7
 
+RUN yum update && yum install -y curl java-1.8.0-openjdk-devel java-1.8.0-openjdk
+
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2018-03-27
 
@@ -31,6 +33,12 @@ ENV HOME=/headless \
     VNC_VIEW_ONLY=false
 WORKDIR $HOME
 
+RUN mkdir -p $HOME/goproject && chmod -R 777 $HOME/goproject
+RUN curl -o go.tar.gz -L `curl -L "https://golang.org/dl/" | grep -E "dl.google.com.*linux-amd64.tar.gz" | head -n 1 | awk -F "href" '{print $2}' | awk -F '"' '{print $2}'`
+RUN tar xzf go.tar.gz
+RUN rm -rf go.tar.gz
+
+
 ### Add all install scripts for further steps
 ADD ./src/common/install/ $INST_SCRIPTS/
 ADD ./src/centos/install/ $INST_SCRIPTS/
@@ -59,5 +67,5 @@ RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
 USER 1000
 
-ENTRYPOINT ["/dockerstartup/vnc_startup.sh"]
-CMD ["--wait"]
+
+CMD export GOPATH=$HOME/goproject && export PATH=$HOME/go/bin:$PATH:$GOPATH/bin && /dockerstartup/vnc_startup.sh --wait
