@@ -2,7 +2,7 @@
 
 FROM centos:7
 
-RUN yum update && yum install -y curl java-1.8.0-openjdk-devel java-1.8.0-openjdk
+RUN yum update -y && yum install -y curl java-1.8.0-openjdk-devel java-1.8.0-openjdk
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2018-03-27
